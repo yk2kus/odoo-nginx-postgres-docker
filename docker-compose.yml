@@ -4,11 +4,12 @@ services:
         container_name: odoo
         image: odoo:15.0
         restart: always
-        network_mode: host
         volumes:
             - ./addons-extra:/mnt/extra-addons
             - ./etc/odoo:/etc/odoo
             - odoo-web-data:/var/lib/odoo
+        ports:
+            - "8069:8069"
         depends_on:
             - postgres
     postgres:
@@ -22,9 +23,10 @@ services:
             - odoo-db-data:/var/lib/postgresql/data/pgdata
     nginx:
         container_name: nginx
-        network_mode: host
         image: nginx:latest
         restart: unless-stopped
+        ports:
+            - 80:80
         volumes:
             - ./nginx/conf:/etc/nginx/conf.d
 
